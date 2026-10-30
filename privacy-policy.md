@@ -64,7 +64,7 @@ The app is not directed at children and collects no information from anyone.
 
 ## Changes
 
-If this policy changes, the updated version will be published at this address with a new date.
+If this policy changes, the updated version will be published at https://kshitizsrf.github.io/PennyPages/privacy-policy with a new date.
 
 ## Contact
 
