@@ -1,0 +1,383 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Penny Pages · Private expense tracker</title>
+  <meta name="description" content="Penny Pages is a private, offline expense and budget tracker that turns your spending into the pages of a passbook. No login, no ads, no tracking.">
+  <meta name="theme-color" content="#1E4FD6">
+  <link rel="icon" type="image/png" href="assets/icon.png">
+  <link rel="apple-touch-icon" href="assets/icon.png">
+  <meta property="og:title" content="Penny Pages: your money, on passbook pages">
+  <meta property="og:description" content="A private, offline expense and budget tracker. No login, no ads, no tracking.">
+  <meta property="og:image" content="assets/feature-graphic.png">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --sky-1: #56B6FF;
+      --sky-2: #1E4FD6;
+      --navy: #0B1F5E;
+      --gold-1: #FFE38A;
+      --gold-2: #F6A623;
+      --coral: #FF8A78;
+      --bg: #F6F9FF;
+      --surface: #FFFFFF;
+      --surface-2: #EEF4FF;
+      --ink: #0E1A3A;
+      --ink-soft: #4A5878;
+      --line: #DDE6F7;
+      --paper: #FFFCF4;
+      --paper-ink: #2B2720;
+      --debit: #B0302A;
+      --credit: #1F7A4D;
+      --shadow: 0 24px 60px -28px rgba(14, 26, 58, 0.45);
+      color-scheme: light;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #070D22;
+        --surface: #0F1A3A;
+        --surface-2: #13214A;
+        --ink: #EAF0FF;
+        --ink-soft: #A7B4D6;
+        --line: #1F2E5E;
+        --shadow: 0 24px 60px -28px rgba(0, 0, 0, 0.8);
+        color-scheme: dark;
+      }
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: "Plus Jakarta Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; }
+    img { max-width: 100%; display: block; }
+    .wrap { width: min(1120px, 100% - 32px); margin-inline: auto; }
+
+    /* ---------- Header ---------- */
+    .top {
+      position: absolute; inset: 0 0 auto 0; z-index: 5;
+      padding: 18px 0;
+    }
+    .top .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+    .brand { display: flex; align-items: center; gap: 10px; color: #fff; text-decoration: none; font-weight: 800; font-size: 1.1rem; }
+    .brand img { width: 38px; height: 38px; border-radius: 11px; box-shadow: 0 6px 16px rgba(0,0,0,.2); }
+    .top nav { display: flex; gap: 6px; }
+    .top nav a {
+      color: rgba(255,255,255,.92); text-decoration: none; font-weight: 600; font-size: .95rem;
+      padding: 8px 14px; border-radius: 999px; transition: background .2s;
+    }
+    .top nav a:hover { background: rgba(255,255,255,.16); }
+
+    /* ---------- Hero ---------- */
+    .hero {
+      position: relative; overflow: hidden; color: #fff;
+      background:
+        radial-gradient(900px 500px at 15% 10%, rgba(255,255,255,.28), transparent 60%),
+        radial-gradient(700px 600px at 95% 90%, rgba(11,31,94,.55), transparent 60%),
+        linear-gradient(135deg, var(--sky-1), var(--sky-2));
+      padding: 128px 0 110px;
+    }
+    .hero::after {
+      content: ""; position: absolute; inset: auto 0 -1px 0; height: 80px;
+      background: var(--bg);
+      clip-path: ellipse(75% 100% at 50% 100%);
+    }
+    .hero .wrap { display: grid; grid-template-columns: 1.1fr .9fr; gap: 48px; align-items: center; position: relative; z-index: 1; }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(255,255,255,.16); border: 1px solid rgba(255,255,255,.28);
+      padding: 6px 14px; border-radius: 999px; font-size: .85rem; font-weight: 600; letter-spacing: .02em;
+    }
+    .eyebrow .dot { width: 8px; height: 8px; border-radius: 50%; background: #8CF2B5; box-shadow: 0 0 0 4px rgba(140,242,181,.25); }
+    h1 { font-size: clamp(2.6rem, 6vw, 4.4rem); line-height: 1.02; letter-spacing: -.03em; margin: 18px 0 14px; font-weight: 800; }
+    h1 .gold { background: linear-gradient(120deg, var(--gold-1), var(--gold-2)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .lead { font-size: clamp(1.05rem, 2vw, 1.25rem); color: rgba(255,255,255,.9); max-width: 34em; margin: 0 0 28px; }
+    .cta { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 10px; text-decoration: none; font-weight: 700;
+      padding: 14px 22px; border-radius: 16px; transition: transform .15s, box-shadow .2s, background .2s;
+    }
+    .btn:hover { transform: translateY(-2px); }
+    .btn-play { background: #0A0F1F; color: #fff; box-shadow: 0 14px 30px -12px rgba(0,0,0,.6); }
+    .btn-play small { display: block; font-size: .7rem; font-weight: 500; opacity: .75; line-height: 1; }
+    .btn-play span { line-height: 1.15; }
+    .btn-ghost { color: #fff; border: 1.5px solid rgba(255,255,255,.55); }
+    .btn-ghost:hover { background: rgba(255,255,255,.12); }
+    .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 26px; }
+    .chip { font-size: .85rem; font-weight: 600; padding: 6px 12px; border-radius: 999px; background: rgba(255,255,255,.14); border: 1px solid rgba(255,255,255,.22); }
+
+    /* The icon floating above a passbook page */
+    .stage { position: relative; height: 470px; perspective: 1200px; }
+    .page {
+      position: absolute; left: 50%; bottom: 0; width: min(420px, 100%);
+      transform: translateX(-50%) rotateX(22deg) rotateZ(-3deg);
+      transform-origin: bottom center;
+      background: var(--paper); color: var(--paper-ink);
+      border-radius: 14px; padding: 18px 18px 14px;
+      box-shadow: 0 40px 80px -30px rgba(5, 12, 40, .7), 0 0 0 8px rgba(255,255,255,.12);
+      font-family: "JetBrains Mono", ui-monospace, monospace; font-size: .74rem;
+    }
+    .page .head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; }
+    .page .head b { letter-spacing: .2em; font-size: .82rem; color: #1E55B8; }
+    .page .head span { color: #8A8170; }
+    .page table { width: 100%; border-collapse: collapse; }
+    .page th { text-align: left; font-weight: 600; padding: 6px 4px; border-bottom: 3px double rgba(43,39,32,.5); }
+    .page td { padding: 7px 4px; border-bottom: 1px solid #E8DFCA; white-space: nowrap; }
+    .page .num { text-align: right; }
+    .page .dr { color: var(--debit); }
+    .page .cr { color: var(--credit); }
+    .page .bf td { color: #8A8170; font-weight: 600; }
+    .coin {
+      position: absolute; left: 50%; top: 10px; width: 230px; margin-left: -115px;
+      filter: drop-shadow(0 30px 40px rgba(5,12,40,.45));
+      animation: float 5s ease-in-out infinite;
+    }
+    .coin img { border-radius: 52px; }
+    .spark { position: absolute; color: #fff; font-size: 26px; animation: twinkle 2.4s ease-in-out infinite; }
+    .spark.s1 { left: 12%; top: 18%; }
+    .spark.s2 { right: 10%; top: 6%; font-size: 34px; animation-delay: .8s; }
+    .spark.s3 { right: 18%; top: 44%; font-size: 18px; animation-delay: 1.4s; }
+    @keyframes float { 0%, 100% { transform: translateY(0) rotate(-2deg); } 50% { transform: translateY(-14px) rotate(2deg); } }
+    @keyframes twinkle { 0%, 100% { opacity: .35; transform: scale(.85); } 50% { opacity: 1; transform: scale(1.1); } }
+
+    /* ---------- Sections ---------- */
+    section { padding: 90px 0; }
+    .section-head { text-align: center; max-width: 640px; margin: 0 auto 48px; }
+    .kicker { color: var(--sky-2); font-weight: 700; letter-spacing: .14em; text-transform: uppercase; font-size: .8rem; }
+    @media (prefers-color-scheme: dark) { .kicker { color: var(--sky-1); } }
+    h2 { font-size: clamp(1.9rem, 4vw, 2.8rem); letter-spacing: -.02em; line-height: 1.12; margin: 10px 0 12px; }
+    .section-head p { color: var(--ink-soft); margin: 0; font-size: 1.05rem; }
+
+    .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+    .card {
+      background: var(--surface); border: 1px solid var(--line); border-radius: 22px; padding: 26px;
+      box-shadow: var(--shadow); transition: transform .2s, border-color .2s;
+    }
+    .card:hover { transform: translateY(-4px); border-color: color-mix(in srgb, var(--sky-1) 50%, var(--line)); }
+    .card .ic {
+      width: 50px; height: 50px; border-radius: 15px; display: grid; place-items: center; font-size: 24px; margin-bottom: 16px;
+      background: linear-gradient(135deg, color-mix(in srgb, var(--sky-1) 25%, transparent), color-mix(in srgb, var(--sky-2) 18%, transparent));
+    }
+    .card h3 { margin: 0 0 6px; font-size: 1.15rem; letter-spacing: -.01em; }
+    .card p { margin: 0; color: var(--ink-soft); font-size: .97rem; }
+
+    /* Privacy band */
+    .privacy {
+      background: linear-gradient(135deg, var(--navy), #13307E 60%, var(--sky-2));
+      color: #fff; border-radius: 32px; padding: 56px; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center;
+      position: relative; overflow: hidden;
+    }
+    .privacy::before {
+      content: ""; position: absolute; width: 420px; height: 420px; right: -120px; top: -160px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,214,107,.35), transparent 65%);
+    }
+    .privacy h2 { margin-top: 0; }
+    .privacy p { color: rgba(255,255,255,.82); }
+    .privacy ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; position: relative; }
+    .privacy li {
+      display: flex; gap: 14px; align-items: flex-start; background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.14); border-radius: 18px; padding: 16px 18px;
+    }
+    .privacy li b { display: block; }
+    .privacy li span { color: rgba(255,255,255,.75); font-size: .93rem; }
+    .privacy .tick { flex: none; width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; background: #8CF2B5; color: #0B3D2A; font-weight: 800; }
+
+    /* Languages */
+    .langs { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+    .langs span {
+      background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: 8px 16px; font-weight: 600;
+    }
+
+    /* Final call */
+    .final { text-align: center; }
+    .final img { width: 96px; height: 96px; border-radius: 26px; margin: 0 auto 18px; box-shadow: var(--shadow); }
+    .final .btn-play { margin-top: 10px; }
+
+    footer { border-top: 1px solid var(--line); padding: 30px 0 40px; color: var(--ink-soft); font-size: .92rem; }
+    footer .wrap { display: flex; flex-wrap: wrap; gap: 12px 24px; justify-content: space-between; align-items: center; }
+    footer nav { display: flex; flex-wrap: wrap; gap: 18px; }
+    footer a { text-decoration: none; font-weight: 600; }
+    footer a:hover { color: var(--sky-2); }
+
+    /* Reveal on scroll */
+    .reveal { opacity: 0; transform: translateY(18px); transition: opacity .7s ease, transform .7s ease; }
+    .reveal.shown { opacity: 1; transform: none; }
+
+    @media (max-width: 900px) {
+      .hero { padding: 110px 0 90px; }
+      .hero .wrap { grid-template-columns: 1fr; text-align: center; }
+      .lead { margin-inline: auto; }
+      .cta, .chips { justify-content: center; }
+      .stage { height: 400px; }
+      .grid { grid-template-columns: repeat(2, 1fr); }
+      .privacy { grid-template-columns: 1fr; padding: 36px 24px; }
+    }
+    @media (max-width: 600px) {
+      .top nav a:not(:last-child) { display: none; }
+      .grid { grid-template-columns: 1fr; }
+      .coin { width: 180px; margin-left: -90px; }
+      .coin img { border-radius: 40px; }
+      .page { font-size: .64rem; padding: 14px 12px 10px; }
+      .page .hide-sm { display: none; }
+      section { padding: 64px 0; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .coin, .spark { animation: none; }
+      .reveal { opacity: 1; transform: none; transition: none; }
+      html { scroll-behavior: auto; }
+    }
+  </style>
+</head>
+<body>
+  <header class="top">
+    <div class="wrap">
+      <a class="brand" href="./"><img src="assets/icon.png" alt="">Penny Pages</a>
+      <nav>
+        <a href="#features">Features</a>
+        <a href="#privacy">Privacy</a>
+        <a href="privacy-policy">Policy</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="wrap">
+        <div>
+          <span class="eyebrow"><span class="dot"></span> Free on Android · works offline</span>
+          <h1>Your money,<br>on <span class="gold">passbook pages</span>.</h1>
+          <p class="lead">Penny Pages is a private expense and budget tracker. Add an expense in two taps, see where your money goes, and flip through it all like a real bank passbook. No login, no ads, nothing leaves your phone.</p>
+          <div class="cta">
+            <a class="btn btn-play" href="https://play.google.com/store/apps/details?id=com.pennypages.app" rel="noopener">
+              <svg width="26" height="28" viewBox="0 0 26 28" aria-hidden="true"><path fill="#34A853" d="M1.2.6 14.4 13.8 1.2 27.1C.8 26.8.6 26.3.6 25.7V2C.6 1.4.8.9 1.2.6Z"/><path fill="#FBBC04" d="m18.8 18.2-4.4-4.4 4.4-4.4 5.3 3c1.5.9 1.5 2.3 0 3.1l-5.3 2.7Z"/><path fill="#4285F4" d="M18.8 18.2 14.4 13.8 1.2 27.1c.5.5 1.3.5 2.2 0l15.4-8.9Z"/><path fill="#EA4335" d="M18.8 9.4 3.4.6C2.5 0 1.7.1 1.2.6l13.2 13.2 4.4-4.4Z"/></svg>
+              <span><small>GET IT ON</small>Google Play</span>
+            </a>
+            <a class="btn btn-ghost" href="#features">See what it does</a>
+          </div>
+          <div class="chips">
+            <span class="chip">No login</span>
+            <span class="chip">No ads</span>
+            <span class="chip">No tracking</span>
+            <span class="chip">28 languages</span>
+          </div>
+        </div>
+
+        <div class="stage" aria-hidden="true">
+          <div class="page">
+            <div class="head"><b>PASSBOOK</b><span>25 Oct – 29 Oct</span></div>
+            <table>
+              <tr><th>DATE</th><th>DETAILS</th><th class="num">DEBIT</th><th class="num hide-sm">CREDIT</th><th class="num">BALANCE</th></tr>
+              <tr class="bf"><td colspan="2">Brought forward</td><td></td><td class="hide-sm"></td><td class="num">44,704.00</td></tr>
+              <tr><td>25 Oct</td><td>Food · Office</td><td class="num dr">434.00</td><td class="hide-sm"></td><td class="num">44,270.00</td></tr>
+              <tr><td>27 Oct</td><td>Transport</td><td class="num dr">407.00</td><td class="hide-sm"></td><td class="num">43,863.00</td></tr>
+              <tr><td>28 Oct</td><td>Salary</td><td></td><td class="num cr hide-sm">78,000.00</td><td class="num">1,21,863.00</td></tr>
+              <tr><td>29 Oct</td><td>Chai &amp; samosa</td><td class="num dr">64.00</td><td class="hide-sm"></td><td class="num">1,21,799.00</td></tr>
+            </table>
+          </div>
+          <div class="coin"><img src="assets/icon.png" alt=""></div>
+          <span class="spark s1">✦</span><span class="spark s2">✦</span><span class="spark s3">✦</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="features">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <span class="kicker">Everything you need</span>
+          <h2>Simple to start. Satisfying to keep.</h2>
+          <p>All the essentials of a money tracker, made quick to use and pleasant to come back to.</p>
+        </div>
+        <div class="grid">
+          <article class="card reveal"><div class="ic">📖</div><h3>A real passbook</h3><p>Flip through your entries as bank-passbook pages: drag a page to turn it, read one up close, or go full screen in landscape. Black-and-white print included.</p></article>
+          <article class="card reveal"><div class="ic">⚡</div><h3>Two-tap entry</h3><p>A built-in calculator keypad (120 + 45 × 2), the category you usually pick at this hour already chosen, and your past notes one tap away.</p></article>
+          <article class="card reveal"><div class="ic">🎯</div><h3>Budgets &amp; goals</h3><p>Daily, weekly or monthly budgets with a clear status, and savings goals that show how much to put aside each month.</p></article>
+          <article class="card reveal"><div class="ic">📊</div><h3>Insights</h3><p>Donut, ranking, trend, a spending calendar and cash flow, with a comparison to the previous period and a monthly recap to share.</p></article>
+          <article class="card reveal"><div class="ic">🔁</div><h3>Recurring bills</h3><p>Rent, salary and subscriptions that repeat weekly, monthly or yearly. Confirm or skip each one with a tap.</p></article>
+          <article class="card reveal"><div class="ic">🎨</div><h3>Make it yours</h3><p>Six themes plus your wallpaper's colours, each with its own app icon, light and dark modes, a home-screen widget and app lock.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="privacy" style="padding-top: 0;">
+      <div class="wrap">
+        <div class="privacy reveal">
+          <div>
+            <span class="kicker" style="color:#FFD66B">Private by design</span>
+            <h2>Your money stays on your phone.</h2>
+            <p>Penny Pages has no servers and no accounts. The app does not even have permission to use the internet, so your entries cannot be sent anywhere.</p>
+            <a class="btn btn-ghost" href="privacy-policy" style="margin-top:8px">Read the privacy policy</a>
+          </div>
+          <ul>
+            <li><span class="tick">✓</span><div><b>No data collected</b><span>No analytics, crash reporting or tracking of any kind.</span></div></li>
+            <li><span class="tick">✓</span><div><b>No ads, no login</b><span>Open it and start. Nothing to sign up for.</span></div></li>
+            <li><span class="tick">✓</span><div><b>App lock</b><span>Fingerprint, face or screen lock, if you want it.</span></div></li>
+            <li><span class="tick">✓</span><div><b>Your data, your file</b><span>Export to CSV and import it on a new phone whenever you like.</span></div></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section style="padding-top: 0;">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <span class="kicker">In your language</span>
+          <h2>Speaks 28 languages.</h2>
+          <p>Including 13 Indian languages, and amounts in any currency.</p>
+        </div>
+        <div class="langs reveal">
+          <span>English</span><span>हिन्दी</span><span>বাংলা</span><span>मराठी</span><span>తెలుగు</span><span>தமிழ்</span><span>ગુજરાતી</span>
+          <span>ಕನ್ನಡ</span><span>മലയാളം</span><span>ਪੰਜਾਬੀ</span><span>ଓଡ଼ିଆ</span><span>অসমীয়া</span><span>اردو</span><span>नेपाली</span>
+          <span>Español</span><span>Français</span><span>Deutsch</span><span>Português</span><span>Italiano</span><span>Русский</span>
+          <span>العربية</span><span>Türkçe</span><span>Bahasa Indonesia</span><span>Tiếng Việt</span><span>ไทย</span><span>中文</span><span>日本語</span><span>한국어</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="final" style="padding-top: 0;">
+      <div class="wrap reveal">
+        <img src="assets/icon.png" alt="Penny Pages icon">
+        <h2>Start keeping your hisab today.</h2>
+        <p style="color:var(--ink-soft); margin:0 0 8px;">Free on Google Play. Small, fast and fully offline.</p>
+        <a class="btn btn-play" href="https://play.google.com/store/apps/details?id=com.pennypages.app" rel="noopener">
+          <svg width="26" height="28" viewBox="0 0 26 28" aria-hidden="true"><path fill="#34A853" d="M1.2.6 14.4 13.8 1.2 27.1C.8 26.8.6 26.3.6 25.7V2C.6 1.4.8.9 1.2.6Z"/><path fill="#FBBC04" d="m18.8 18.2-4.4-4.4 4.4-4.4 5.3 3c1.5.9 1.5 2.3 0 3.1l-5.3 2.7Z"/><path fill="#4285F4" d="M18.8 18.2 14.4 13.8 1.2 27.1c.5.5 1.3.5 2.2 0l15.4-8.9Z"/><path fill="#EA4335" d="M18.8 9.4 3.4.6C2.5 0 1.7.1 1.2.6l13.2 13.2 4.4-4.4Z"/></svg>
+          <span><small>GET IT ON</small>Google Play</span>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <span>© <span id="year">2026</span> Bits4Bytes · Made in India</span>
+      <nav>
+        <a href="privacy-policy">Privacy policy</a>
+        <a href="mailto:bits4bytes.apps@gmail.com">bits4bytes.apps@gmail.com</a>
+      </nav>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+    const items = document.querySelectorAll(".reveal");
+    if ("IntersectionObserver" in window) {
+      const seen = new IntersectionObserver((entries) => {
+        entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add("shown"); seen.unobserve(e.target); } });
+      }, { threshold: 0.12 });
+      items.forEach((el) => seen.observe(el));
+    } else {
+      items.forEach((el) => el.classList.add("shown"));
+    }
+  </script>
+</body>
+</html>
